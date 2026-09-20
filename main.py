@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 
 from services.auth.login_wall import render_login_wall
+from ui.muscle_map import render_muscle_map
 from services.state.session_default import initial_session_defaults
 from services.config.workout_config import EXERCISE_OPTIONS
 from services.persistence.exercise_repository import init_db
@@ -524,6 +525,8 @@ def main():
 
     init_db()
 
+
+
     if not render_login_wall():
         return
 
@@ -541,9 +544,19 @@ def main():
                 llm=llm_coach,
                 tts=tts
             )
+            
+            # Welcome message when pipeline is initialized (user logged in)
+            username = st.session_state.get("username", "")
+            welcome_text = f"Welcome {username}, let's get ready for your workout!"
+            try:
+                st.session_state["audio_to_play"] = tts.speak(welcome_text)
+                st.session_state["coach_feedback"] = welcome_text
+            except Exception as e:
+                print(f"TTS Welcome Error: {e}")
 
-        except Exception:
+        except Exception as e:
             st.session_state.voice_pipeline = None
+            st.error(f"Failed to initialize voice pipeline: {e}")
 
     workout_started = st.session_state.get(
         "workout_started",
@@ -777,17 +790,34 @@ def main():
 
             if end_session_button:
                 st.session_state["workout_started"] = False
-                st.session_state["exercise_type"] = None
-
-                if st.session_state.voice_pipeline:
-                    result=st.session_state.voice_pipeline.process_event(
-                        event="workout_completed",
-                        exercise=exercise,
-                        metrics={}
-                    )
-
-                    if result:
-                        st.session_state.audio_to_play, st.session_state.coach_feedback = result
+                
+                # Fetch AI Post-Workout Summary
+                if st.session_state.voice_pipeline and hasattr(st.session_state.voice_pipeline.llm, "generate_workout_summary"):
+                    issues = st.session_state.get("session_issues", [])
+                    try:
+                        summary = st.session_state.voice_pipeline.llm.generate_workout_summary(
+                            exercise=exercise,
+                            reps=reps,
+                            sets=sets,
+                            form_issues=issues
+                        )
+                        st.session_state["post_workout_summary"] = summary
+                        
+                        # Make coach say the summary
+                        try:
+                            st.session_state["audio_to_play"] = st.session_state.voice_pipeline.tts.speak(summary)
+                            st.session_state["coach_feedback"] = summary
+                        except:
+                            pass
+                    except Exception as e:
+                        print(f"Summary Error: {e}")
+                
+                st.session_state["show_summary"] = True
+                
+                # Clear session issues
+                if "session_issues" in st.session_state:
+                    del st.session_state["session_issues"]
+                
                 st.rerun()
 
             render_live_metrics(exercise)
@@ -804,38 +834,123 @@ def main():
     audio_data = st.session_state.get("audio_to_play")
 
     if audio_data:
-        st.audio(audio_data, format="audio/mp3")
+        import base64
+        b64 = base64.b64encode(audio_data).decode()
+        st.html(f'<audio autoplay style="display:none;" src="data:audio/mp3;base64,{b64}"></audio>')
 
-    if st.session_state.get("coach_feedback"):
-        st.success(f"**Coach:**{st.session_state.coach_feedback}")
+    if st.session_state.get("coach_feedback") and not st.session_state.get("show_summary"):
+        st.success(f"**Coach:** {st.session_state.coach_feedback}")
 
-    if not workout_started:
+    if st.session_state.get("show_summary"):
+        st.markdown("### WORKOUT COMPLETE 🏆")
+        
+        # Badges
+        issues = st.session_state.get("session_issues", [])
+        badges = []
+        if len(issues) == 0:
+            badges.append("🏆 Perfect Form")
+        else:
+            badges.append("💪 Iron Will")
+        if st.session_state.get('plan_reps', 0) >= 15:
+            badges.append("🔥 Volume Warrior")
+            
+        badge_html = " ".join([f"<span style='background: #333; padding: 5px 12px; border-radius: 15px; margin-right: 10px; font-weight: bold; color: #f36c21; font-size: 0.9rem;'>{b}</span>" for b in badges])
+        
+        st.html(f"""
+        <div style="margin-bottom: 20px;">
+            {badge_html}
+        </div>
+        <div style="background-color: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333;">
+            <div style="display: flex; justify-content: space-around; text-align: center;">
+                <div><h4 style="color: #888; margin:0;">Sets Completed</h4><h2 style="margin:0; color: #fff;">{st.session_state.get('plan_sets', 0)}</h2></div>
+                <div><h4 style="color: #888; margin:0;">Reps per Set</h4><h2 style="margin:0; color: #fff;">{st.session_state.get('plan_reps', 0)}</h2></div>
+            </div>
+        </div>
+        """)
+        
+        # Form Report section
+        if len(issues) > 0:
+            st.markdown("### 📋 Form Report")
+            for issue in issues:
+                st.warning(f"⚠️ {issue}")
+        else:
+            st.markdown("### 📋 Form Report")
+            st.success("✅ Flawless execution! No form mistakes detected.")
+            
+        summary = st.session_state.get("post_workout_summary", "Great job! Keep up the good work.")
+        st.info(f"**Coach's Notes:** {summary}")
+        
+        render_muscle_map(st.session_state.get("exercise_type", "Squats"))
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("DISCARD", use_container_width=True):
+                st.session_state["show_summary"] = False
+                st.session_state["coach_feedback"] = ""
+                st.session_state["audio_to_play"] = None
+                st.rerun()
+        with col2:
+            if st.button("SAVE WORKOUT", use_container_width=True, type="primary"):
+                # Save partial/full workout to history if needed
+                from services.persistence.exercise_repository import add_exercise
+                user_id = st.session_state.get("user_id", 0)
+                add_exercise(
+                    user_id=user_id,
+                    exercise_name=st.session_state.get("exercise_type", "Squats"),
+                    reps=st.session_state.get("plan_reps", 0),
+                    sets=st.session_state.get("plan_sets", 0),
+                    time=0 # Time calculation can be added if tracked
+                )
+                st.session_state["show_summary"] = False
+                st.session_state["coach_feedback"] = ""
+                st.session_state["audio_to_play"] = None
+                st.rerun()
+
+    elif not workout_started:
 
         st.html(
             """
             <div class="camera-section">
                 <div class="camera-frame">
                     <div class="camera-placeholder">
-
-                        <div class="camera-icon">
-                            ◉
-                        </div>
-
-                        <div class="camera-placeholder-title">
-                            CAMERA READY
-                        </div>
-
+                        <div class="camera-icon">◉</div>
+                        <div class="camera-placeholder-title">CAMERA READY</div>
                         <div class="camera-placeholder-text">
-                            Choose your exercise and start your session
-                            <br>
-                            to begin real-time training.
+                            Choose your exercise and start your session<br>to begin real-time training.
                         </div>
-
                     </div>
                 </div>
             </div>
             """
         )
+        
+        # Use the selector state so it updates instantly before they click start
+        exercise = st.session_state.get("plan_exercise_selector", "Squats")
+        
+        # Generic placeholder tutorials (open-source / YouTube fitness channels)
+        tutorial_vids = {
+            "Squats": "https://www.youtube.com/watch?v=gcNh17Ckjgg",
+            "Push-ups": "https://www.youtube.com/watch?v=IODxDxX7oi4",
+            "Biceps Curls (Dumbbell)": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
+            "Shoulder Press": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+            "Lunges": "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
+            "Glute Bridges": "https://www.youtube.com/watch?v=wPM8icPu6H8",
+            "Calf Raises": "https://www.youtube.com/watch?v=-M4-G8p8fmc",
+            "Triceps Extensions": "https://www.youtube.com/watch?v=nRiJVZDpdL0",
+            "Lateral Raises": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+            "Front Raises": "https://www.youtube.com/watch?v=-t7fuZ0KhDA",
+            "Standing Knee Raises": "https://www.youtube.com/watch?v=0hAZo84sL7o",
+            "Mountain Climbers": "https://www.youtube.com/watch?v=nmwgirgXLYM"
+        }
+        
+        if exercise in tutorial_vids:
+            
+            @st.dialog(f"Tutorial: {exercise}")
+            def show_tutorial_dialog(video_url):
+                st.video(video_url)
+                
+            if st.button(f"📺 View Tutorial: {exercise}"):
+                show_tutorial_dialog(tutorial_vids[exercise])
 
     else:
 

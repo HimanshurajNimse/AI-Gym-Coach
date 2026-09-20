@@ -224,19 +224,29 @@ class VoicePipeline:
             if now - self.last_spoken_at < 10:
                 return None
 
+        if issue:
+            if "session_issues" not in st.session_state:
+                st.session_state["session_issues"] = []
+            if issue != self.last_issue:
+                st.session_state["session_issues"].append(issue)
+
         try:
-            text = self.llm.give_feedback(event, issue)
+            text = self.llm.give_feedback(event, exercise=exercise, issue=issue)
         except Exception as e:
             print(f"LLM error: {e}")
-            return None
+            return None, f"LLM error: {e}"
 
         if not text:
             return None
 
-        voice = self.tts.speak(text)
+        try:
+            voice = self.tts.speak(text)
+        except Exception as e:
+            print(f"TTS error: {e}")
+            return None, f"TTS error: {e}"
 
         if not voice:
-            return None
+            return None, "TTS error: returned empty audio"
 
         self.last_spoken_at = time.time()
         self.last_issue = issue

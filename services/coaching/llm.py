@@ -13,13 +13,14 @@ class LLMCoach:
             raise ValueError("GROQ_API_KEY is missing from .env")
 
         self.client = Groq(api_key=api_key)
-        self.model = "llama-3.3-70b-versatile"
+        self.model = "groq/compound-mini"
 
-    def give_feedback(self, event, issue=None):
+    def give_feedback(self, event, exercise=None, issue=None):
         prompt = f"""
 You are an AI gym coach.
 
-Exercise: {event}
+Event: {event}
+Exercise: {exercise or 'General Workout'}
 Issue: {issue or "No specific issue"}
 
 Give one short, natural spoken coaching instruction.
@@ -43,4 +44,34 @@ Do not use markdown, bullet points, emojis, or technical explanations.
             max_tokens=100
         )
 
+        return response.choices[0].message.content.strip()
+
+    def generate_workout_summary(self, exercise, reps, sets, form_issues):
+        issues_str = "\n".join(set(form_issues)) if form_issues else "Perfect form, no issues!"
+        prompt = f"""
+You are an AI gym coach giving a final post-workout summary.
+
+Exercise: {exercise}
+Total Sets: {sets}
+Total Reps: {reps}
+Form Notes: 
+{issues_str}
+
+Write a short, engaging 2-3 sentence summary reviewing their performance. Praise their effort and give them one actionable tip based on their form notes for next time. Do not use markdown bullet points, keep it conversational.
+"""
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a highly motivating AI gym coach."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.7,
+            max_tokens=150
+        )
         return response.choices[0].message.content.strip()
