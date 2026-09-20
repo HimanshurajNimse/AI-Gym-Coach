@@ -1,0 +1,240 @@
+import os
+import base64
+import streamlit as st
+import streamlit.components.v1 as components
+
+
+def load_css(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, encoding="utf-8") as f:
+            st.markdown(
+                f"<style>{f.read()}</style>",
+                unsafe_allow_html=True
+            )
+
+
+def inject_local_font(font_path, font_name="AdobeClean"):
+    if not os.path.exists(font_path):
+        return
+
+    with open(font_path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+
+    ext = os.path.splitext(font_path)[1].lower().lstrip(".")
+    fmt = "opentype" if ext == "otf" else ext
+    mime = "font/otf" if ext == "otf" else f"font/{ext}"
+
+    st.markdown(
+        f"""
+        <style>
+        @font-face {{
+            font-family: '{font_name}';
+            src: url('data:{mime};base64,{encoded}') format('{fmt}');
+            font-weight: 100 900;
+            font-style: normal;
+        }}
+
+        html, body, [class*="css"] {{
+            font-family: '{font_name}', sans-serif;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+def inject_webrtc_styles():
+    """
+    Styles the WebRTC component without changing
+    any workout, camera, pose, or session logic.
+    """
+
+    # Resolve static folder relative to the project root.
+    project_root = os.path.dirname(
+        os.path.dirname(
+            os.path.abspath(__file__)
+        )
+    )
+
+    font_path = os.path.join(
+        project_root,
+        "static",
+        "AdobeClean.otf"
+    )
+
+    if not os.path.exists(font_path):
+        return False
+
+    try:
+        with open(font_path, "rb") as font_file:
+            encoded_font = base64.b64encode(
+                font_file.read()
+            ).decode()
+
+    except OSError:
+        return False
+
+    components.html(
+        f"""
+        <script>
+        (() => {{
+
+            const STYLE_ID = "ai-gym-coach-webrtc-styles";
+
+            const WEBRTC_CSS = `
+                @font-face {{
+                    font-family: "AdobeClean";
+                    src: url("data:font/otf;base64,{encoded_font}")
+                         format("opentype");
+                    font-weight: 100 900;
+                    font-style: normal;
+                    font-display: swap;
+                }}
+
+                html,
+                body,
+                button,
+                input,
+                textarea,
+                select {{
+                    font-family:
+                        "AdobeClean",
+                        sans-serif !important;
+                }}
+
+                .MuiButtonBase-root,
+                .MuiButton-root,
+                .MuiButton-contained,
+                .MuiButton-text {{
+                    border-radius: 0 !important;
+                    font-family:
+                        "AdobeClean",
+                        sans-serif !important;
+                    letter-spacing: 0.05em !important;
+                }}
+            `;
+
+
+            function injectIntoIframe(iframe) {{
+                try {{
+
+                    const doc =
+                        iframe.contentDocument ||
+                        iframe.contentWindow.document;
+
+                    if (!doc || !doc.head) {{
+                        return;
+                    }}
+
+                    // Don't inject the same stylesheet twice.
+                    if (doc.getElementById(STYLE_ID)) {{
+                        return;
+                    }}
+
+                    const style =
+                        doc.createElement("style");
+
+                    style.id = STYLE_ID;
+                    style.textContent = WEBRTC_CSS;
+
+                    doc.head.appendChild(style);
+
+                }} catch (error) {{
+
+                    console.warn(
+                        "[AI Gym Coach] WebRTC styling skipped:",
+                        error
+                    );
+
+                }}
+            }}
+
+
+            function findAndPatch() {{
+                try {{
+
+                    const parentDoc =
+                        window.parent.document;
+
+                    const iframes =
+                        parentDoc.querySelectorAll("iframe");
+
+                    iframes.forEach((iframe) => {{
+
+                        const src =
+                            iframe.getAttribute("src") || "";
+
+                        if (
+                            src.toLowerCase().includes("webrtc")
+                        ) {{
+
+                            injectIntoIframe(iframe);
+
+                            if (!iframe.dataset.aiGymWatching) {{
+
+                                iframe.dataset.aiGymWatching =
+                                    "true";
+
+                                iframe.addEventListener(
+                                    "load",
+                                    () => {{
+                                        injectIntoIframe(iframe);
+                                    }}
+                                );
+                            }}
+                        }}
+                    }});
+
+                }} catch (error) {{
+
+                    console.warn(
+                        "[AI Gym Coach] Could not scan WebRTC:",
+                        error
+                    );
+
+                }}
+            }}
+
+
+            // Initial check
+            findAndPatch();
+
+
+            // Detect dynamically created WebRTC components.
+            try {{
+
+                const observer =
+                    new MutationObserver(() => {{
+                        findAndPatch();
+                    }});
+
+                observer.observe(
+                    window.parent.document.body,
+                    {{
+                        childList: true,
+                        subtree: true
+                    }}
+                );
+
+            }} catch (error) {{
+
+                console.warn(
+                    "[AI Gym Coach] MutationObserver unavailable:",
+                    error
+                );
+
+            }}
+
+
+            // Fallback for Streamlit rerenders.
+            setInterval(
+                findAndPatch,
+                1500
+            );
+
+        }})();
+        </script>
+        """,
+        height=0,
+    )
+
+    return True

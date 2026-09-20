@@ -1,0 +1,2853 @@
+/* =========================================================
+   AI GYM COACH — PREMIUM UI SYSTEM
+   Streamlit Static CSS
+========================================================= */
+
+/* =========================================================
+   01. DESIGN TOKENS
+========================================================= */
+
+:root {
+  --bg: #080A0F;
+  --bg-secondary: #0D1017;
+  --surface: #11151E;
+  --surface-hover: #151A24;
+  --surface-soft: #0F131B;
+
+  --border: rgba(255, 255, 255, 0.075);
+  --border-strong: rgba(255, 255, 255, 0.13);
+
+  --text: #F4F5F7;
+  --text-secondary: #A6ACB8;
+  --text-muted: #6D7482;
+
+  --accent: #B8FF4D;
+  --accent-soft: rgba(184, 255, 77, 0.12);
+  --accent-glow: rgba(184, 255, 77, 0.25);
+
+  --danger: #FF5C5C;
+  --warning: #FFB84D;
+  --success: #B8FF4D;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --transition: 180ms ease;
+}
+
+
+/* =========================================================
+   02. GLOBAL APP
+========================================================= */
+
+.stApp {
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(184, 255, 77, 0.035),
+      transparent 28%
+    ),
+    var(--bg) !important;
+
+  color: var(--text) !important;
+}
+
+
+/* =========================================================
+   03. MAIN CONTAINER
+========================================================= */
+
+.block-container {
+  max-width: 1400px !important;
+
+  padding-top: 2.5rem !important;
+  padding-bottom: 4rem !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+
+/* =========================================================
+   04. TYPOGRAPHY
+========================================================= */
+
+.block-container,
+.block-container * {
+  font-family: "AdobeClean", "Inter", sans-serif !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text) !important;
+  letter-spacing: -0.025em !important;
+}
+
+h1 {
+  font-size: 2.4rem !important;
+  font-weight: 500 !important;
+}
+
+h2 {
+  font-size: 1.75rem !important;
+  font-weight: 500 !important;
+}
+
+h3 {
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   05. SIDEBAR
+========================================================= */
+
+[data-testid="stSidebar"] {
+  background: var(--bg-secondary) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+  padding-top: 2rem;
+}
+
+[data-testid="stSidebarNavLink"] {
+  border-radius: var(--radius-sm) !important;
+  transition: background var(--transition), color var(--transition);
+}
+
+[data-testid="stSidebarNavLink"]:hover {
+  background: var(--surface-hover) !important;
+}
+
+[data-testid="stSidebarNavLink"][aria-current="page"] {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+}
+
+
+/* =========================================================
+   06. BUTTONS
+========================================================= */
+
+.stButton > button,
+.stDownloadButton > button,
+button[kind="secondary"],
+button[kind="primary"] {
+
+  min-height: 44px !important;
+
+  padding: 0.55rem 1.15rem !important;
+
+  border-radius: var(--radius-sm) !important;
+
+  border: 1px solid var(--border-strong) !important;
+
+  background: var(--surface) !important;
+
+  color: var(--text) !important;
+
+  font-size: 0.9rem !important;
+
+  font-weight: 500 !important;
+
+  transition:
+    transform var(--transition),
+    background var(--transition),
+    border var(--transition),
+    box-shadow var(--transition) !important;
+}
+
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+
+  background: var(--surface-hover) !important;
+
+  border-color: rgba(184, 255, 77, 0.3) !important;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   07. PRIMARY BUTTON
+========================================================= */
+
+button[kind="primary"] {
+
+  background: var(--accent) !important;
+
+  color: #080A0F !important;
+
+  border-color: var(--accent) !important;
+
+  font-weight: 600 !important;
+}
+
+button[kind="primary"]:hover {
+
+  background: #C5FF68 !important;
+
+  border-color: #C5FF68 !important;
+
+  box-shadow:
+    0 0 25px var(--accent-glow);
+}
+
+
+/* =========================================================
+   08. INPUTS
+========================================================= */
+
+input,
+textarea {
+
+  background: var(--surface) !important;
+
+  color: var(--text) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-sm) !important;
+
+  transition:
+    border var(--transition),
+    box-shadow var(--transition);
+}
+
+input:focus,
+textarea:focus {
+
+  border-color: rgba(184, 255, 77, 0.5) !important;
+
+  box-shadow:
+    0 0 0 3px var(--accent-soft) !important;
+}
+
+
+/* =========================================================
+   09. SELECTBOX
+========================================================= */
+
+[data-baseweb="select"] > div {
+
+  background: var(--surface) !important;
+
+  color: var(--text) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-sm) !important;
+}
+
+[data-baseweb="popover"],
+[data-baseweb="menu"] {
+
+  background: var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+}
+
+[data-baseweb="menu"] li {
+
+  color: var(--text) !important;
+}
+
+[data-baseweb="menu"] li:hover {
+
+  background: var(--surface-hover) !important;
+}
+
+
+/* =========================================================
+   10. METRIC CARDS
+========================================================= */
+
+[data-testid="stMetric"] {
+
+  position: relative;
+
+  padding: 1.25rem !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.025),
+      rgba(255,255,255,0.01)
+    ),
+    var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+
+  overflow: hidden;
+
+  transition:
+    transform var(--transition),
+    border var(--transition);
+}
+
+[data-testid="stMetric"]:hover {
+
+  transform: translateY(-2px);
+
+  border-color: var(--border-strong) !important;
+}
+
+[data-testid="stMetricLabel"] {
+
+  color: var(--text-muted) !important;
+
+  font-size: 0.78rem !important;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+[data-testid="stMetricValue"] {
+
+  color: var(--text) !important;
+
+  font-size: 2rem !important;
+
+  font-weight: 500 !important;
+
+  letter-spacing: -0.04em;
+}
+
+[data-testid="stMetricDelta"] {
+
+  color: var(--accent) !important;
+}
+
+
+/* =========================================================
+   11. CARDS / CONTAINERS
+========================================================= */
+
+.stContainer,
+[data-testid="stVerticalBlockBorderWrapper"] {
+
+  border-color: var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+}
+
+
+/* =========================================================
+   12. FORMS
+========================================================= */
+
+[data-testid="stForm"] {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.025),
+      rgba(255,255,255,0.01)
+    ) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+
+  padding: 1.5rem !important;
+}
+
+
+/* =========================================================
+   13. TABS
+========================================================= */
+
+.stTabs [data-baseweb="tab-list"] {
+
+  gap: 0.5rem;
+
+  border-bottom: 1px solid var(--border) !important;
+
+  background: transparent !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+
+  color: var(--text-muted) !important;
+
+  padding: 0.7rem 1rem !important;
+
+  background: transparent !important;
+
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important;
+}
+
+.stTabs [aria-selected="true"] {
+
+  color: var(--accent) !important;
+
+  background: var(--accent-soft) !important;
+}
+
+
+/* =========================================================
+   14. EXPANDERS
+========================================================= */
+
+[data-testid="stExpander"] {
+
+  background: var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+}
+
+[data-testid="stExpander"] summary {
+
+  color: var(--text) !important;
+}
+
+
+/* =========================================================
+   15. ALERTS
+========================================================= */
+
+[data-testid="stAlert"] {
+
+  background: var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+}
+
+
+/* =========================================================
+   16. PROGRESS BAR
+========================================================= */
+
+[data-testid="stProgress"] {
+
+  padding: 0 !important;
+}
+
+[data-testid="stProgressBar"] {
+
+  background: #1B202A !important;
+
+  border-radius: 999px !important;
+
+  height: 6px !important;
+}
+
+[data-testid="stProgressBar"] > div {
+
+  background: var(--accent) !important;
+
+  border-radius: 999px !important;
+
+  box-shadow:
+    0 0 12px var(--accent-glow);
+}
+
+
+/* =========================================================
+   17. SLIDER
+========================================================= */
+
+[data-testid="stSlider"] [role="slider"] {
+
+  background: var(--accent) !important;
+
+  border-color: var(--accent) !important;
+}
+
+
+/* =========================================================
+   18. CHECKBOX / RADIO
+========================================================= */
+
+[data-testid="stCheckbox"] label,
+[data-testid="stRadio"] label {
+
+  color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   19. DATAFRAME
+========================================================= */
+
+[data-testid="stDataFrame"] {
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-md) !important;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   20. FILE UPLOADER
+========================================================= */
+
+[data-testid="stFileUploader"] {
+
+  background: var(--surface) !important;
+
+  border: 1px dashed var(--border-strong) !important;
+
+  border-radius: var(--radius-md) !important;
+}
+
+[data-testid="stFileUploader"]:hover {
+
+  border-color: rgba(184, 255, 77, 0.35) !important;
+}
+
+
+/* =========================================================
+   21. CAMERA CONTAINER
+========================================================= */
+
+[data-testid="stCameraInput"] {
+
+  background: var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: var(--radius-lg) !important;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   22. IMAGE / VIDEO
+========================================================= */
+
+img,
+video {
+
+  border-radius: var(--radius-md) !important;
+}
+
+
+/* =========================================================
+   23. CUSTOM WORKOUT CARD
+========================================================= */
+
+.workout-card {
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(184,255,77,0.08),
+      transparent 35%
+    ),
+    var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 2rem;
+
+  min-height: 220px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.workout-card-title {
+
+  font-size: 0.8rem;
+
+  color: var(--text-muted);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.12em;
+}
+
+.workout-card h2 {
+
+  margin-top: 0.5rem;
+
+  font-size: 2rem;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   24. WORKOUT LIVE PANEL
+========================================================= */
+
+.live-panel {
+
+  background: #05070B;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  overflow: hidden;
+
+  position: relative;
+
+  min-height: 500px;
+}
+
+.live-panel::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      transparent 50%,
+      rgba(184,255,77,0.018) 50%
+    );
+
+  background-size: 100% 4px;
+}
+
+
+/* =========================================================
+   25. LIVE INDICATOR
+========================================================= */
+
+.live-indicator {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 5px 10px;
+
+  background: rgba(184,255,77,0.08);
+
+  border: 1px solid rgba(184,255,77,0.18);
+
+  border-radius: 999px;
+
+  color: var(--accent);
+
+  font-size: 0.7rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.live-indicator::before {
+
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  background: var(--accent);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 10px var(--accent);
+
+  animation: livePulse 1.5s infinite;
+}
+
+@keyframes livePulse {
+
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+
+/* =========================================================
+   26. WORKOUT TIMER
+========================================================= */
+
+.workout-timer {
+
+  font-size: 4rem;
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  letter-spacing: -0.06em;
+
+  color: var(--text);
+
+  font-variant-numeric: tabular-nums;
+}
+
+.workout-timer-label {
+
+  margin-top: 0.5rem;
+
+  color: var(--text-muted);
+
+  font-size: 0.72rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   27. REP COUNTER
+========================================================= */
+
+.rep-counter {
+
+  font-size: 4.5rem;
+
+  line-height: 1;
+
+  font-weight: 500;
+
+  color: var(--accent);
+
+  letter-spacing: -0.07em;
+
+  text-shadow:
+    0 0 25px var(--accent-glow);
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   28. FORM SCORE
+========================================================= */
+
+.form-score {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 92px;
+
+  height: 92px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(184,255,77,0.3);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(184,255,77,0.12),
+      transparent 65%
+    );
+
+  color: var(--accent);
+
+  font-size: 1.7rem;
+
+  font-weight: 500;
+
+  box-shadow:
+    0 0 30px rgba(184,255,77,0.08);
+}
+
+
+/* =========================================================
+   29. AI COACH CARD
+========================================================= */
+
+.ai-coach {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(184,255,77,0.055),
+      rgba(184,255,77,0.01)
+    ),
+    var(--surface);
+
+  border: 1px solid rgba(184,255,77,0.13);
+
+  border-radius: var(--radius-md);
+
+  padding: 1.25rem;
+
+  position: relative;
+}
+
+.ai-coach-label {
+
+  color: var(--accent);
+
+  font-size: 0.7rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.12em;
+
+  margin-bottom: 0.6rem;
+}
+
+.ai-coach-message {
+
+  color: var(--text);
+
+  font-size: 0.95rem;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   30. MUSCLE PANEL
+========================================================= */
+
+.muscle-panel {
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1.5rem;
+}
+
+.muscle-row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+}
+
+.muscle-name {
+
+  color: var(--text-secondary);
+
+  font-size: 0.85rem;
+}
+
+.muscle-value {
+
+  color: var(--text);
+
+  font-size: 0.85rem;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   31. MUSCLE PROGRESS
+========================================================= */
+
+.muscle-progress {
+
+  height: 5px;
+
+  margin-top: 6px;
+
+  background: #1A1F29;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.muscle-progress > div {
+
+  height: 100%;
+
+  background: var(--accent);
+
+  border-radius: inherit;
+
+  box-shadow:
+    0 0 10px var(--accent-glow);
+}
+
+
+/* =========================================================
+   32. SECTION HEADER
+========================================================= */
+
+.section-header {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+
+  color: var(--text);
+
+  font-size: 1.1rem;
+
+  font-weight: 500;
+}
+
+.section-subtitle {
+
+  color: var(--text-muted);
+
+  font-size: 0.8rem;
+}
+
+
+/* =========================================================
+   33. STAT NUMBER
+========================================================= */
+
+.stat-number {
+
+  color: var(--text);
+
+  font-size: 2.4rem;
+
+  font-weight: 400;
+
+  letter-spacing: -0.05em;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+
+  color: var(--text-muted);
+
+  margin-top: 0.25rem;
+
+  font-size: 0.72rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   34. EXERCISE CARD
+========================================================= */
+
+.exercise-card {
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  overflow: hidden;
+
+  transition:
+    transform var(--transition),
+    border var(--transition),
+    background var(--transition);
+}
+
+.exercise-card:hover {
+
+  transform: translateY(-3px);
+
+  background: var(--surface-hover);
+
+  border-color: var(--border-strong);
+}
+
+.exercise-card-image {
+
+  height: 170px;
+
+  background: #0A0D13;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.exercise-card-body {
+
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.exercise-card-title {
+
+  color: var(--text);
+
+  font-size: 1rem;
+
+  font-weight: 500;
+}
+
+.exercise-card-meta {
+
+  color: var(--text-muted);
+
+  font-size: 0.75rem;
+
+  margin-top: 0.35rem;
+}
+
+
+/* =========================================================
+   35. BADGES
+========================================================= */
+
+.badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  background: var(--surface-hover);
+
+  border: 1px solid var(--border);
+
+  color: var(--text-secondary);
+
+  font-size: 0.68rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+}
+
+.badge-active {
+
+  color: var(--accent);
+
+  background: var(--accent-soft);
+
+  border-color: rgba(184,255,77,0.15);
+}
+
+
+/* =========================================================
+   36. DIVIDER
+========================================================= */
+
+.divider {
+
+  width: 100%;
+
+  height: 1px;
+
+  background: var(--border);
+
+  margin: 1.5rem 0;
+}
+
+
+/* =========================================================
+   37. SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+
+  width: 7px;
+
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: #252B36;
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background: #343C49;
+}
+
+
+/* =========================================================
+   38. HIDE STREAMLIT BRANDING
+========================================================= */
+
+#MainMenu {
+
+  visibility: hidden;
+}
+
+footer {
+
+  visibility: hidden;
+}
+
+
+/* =========================================================
+   39. REMOVE EXCESS STREAMLIT SPACING
+========================================================= */
+
+[data-testid="stVerticalBlock"] {
+
+  gap: 0.8rem;
+}
+
+[data-testid="stHorizontalBlock"] {
+
+  gap: 1rem;
+}
+
+
+/* =========================================================
+   40. MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .block-container {
+
+    padding-left: 1.25rem !important;
+
+    padding-right: 1.25rem !important;
+
+    padding-top: 1.5rem !important;
+  }
+
+  h1 {
+
+    font-size: 2rem !important;
+  }
+
+  h2 {
+
+    font-size: 1.5rem !important;
+  }
+
+  .workout-timer {
+
+    font-size: 3rem;
+  }
+
+  .rep-counter {
+
+    font-size: 3.5rem;
+  }
+}
+
+
+/* =========================================================
+   41. SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .block-container {
+
+    padding-left: 0.9rem !important;
+
+    padding-right: 0.9rem !important;
+  }
+
+  [data-testid="stMetricValue"] {
+
+    font-size: 1.5rem !important;
+  }
+
+  .workout-timer {
+
+    font-size: 2.5rem;
+  }
+
+  .rep-counter {
+
+    font-size: 3rem;
+  }
+}
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-page {
+    min-height: 48vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.login-header {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 1.4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: rgba(184, 255, 77, 0.10);
+
+    border: 1px solid rgba(184, 255, 77, 0.18);
+
+    color: #B8FF4D;
+
+    font-size: 25px;
+
+    box-shadow:
+        0 0 35px rgba(184, 255, 77, 0.08);
+}
+
+.login-eyebrow {
+    color: #B8FF4D;
+
+    font-size: 0.7rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.16em;
+
+    margin-bottom: 0.7rem;
+}
+
+.login-title {
+    color: #F4F5F7;
+
+    font-size: 2.8rem;
+
+    line-height: 1.05;
+
+    font-weight: 500;
+
+    letter-spacing: -0.055em;
+}
+
+.login-subtitle {
+    color: #7F8795;
+
+    font-size: 0.92rem;
+
+    line-height: 1.6;
+
+    margin-top: 1rem;
+}
+
+.login-card {
+    width: 100%;
+
+    max-width: 520px;
+
+    padding: 1.5rem;
+
+    text-align: left;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.035),
+            rgba(255,255,255,0.012)
+        ),
+        #11151E;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,0.35);
+}
+
+.login-card-title {
+    color: #F4F5F7;
+
+    font-size: 1.05rem;
+
+    font-weight: 500;
+}
+
+.login-card-subtitle {
+    color: #6D7482;
+
+    font-size: 0.82rem;
+
+    margin-top: 0.35rem;
+}
+
+
+/* =========================================================
+   LOGIN FORM
+========================================================= */
+
+.login-card + div {
+    width: 100%;
+    max-width: 520px;
+}
+
+
+/* =========================================================
+   LOGIN INPUT
+========================================================= */
+
+.login-page ~ div input {
+    background: #11151E !important;
+
+    border: 1px solid rgba(255,255,255,0.08) !important;
+
+    color: #F4F5F7 !important;
+
+    border-radius: 8px !important;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-page ~ div button {
+    background: #B8FF4D !important;
+
+    color: #080A0F !important;
+
+    border: 1px solid #B8FF4D !important;
+
+    border-radius: 8px !important;
+
+    font-weight: 600 !important;
+
+    min-height: 46px !important;
+
+    transition: all 180ms ease !important;
+}
+
+.login-page ~ div button:hover {
+    background: #C5FF68 !important;
+
+    border-color: #C5FF68 !important;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 0 25px rgba(184,255,77,0.20);
+}
+
+/* =========================================================
+   AI GYM COACH — HERO LOGIN
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   BACKGROUND
+--------------------------------------------------------- */
+
+.stApp {
+    background:
+        radial-gradient(
+            circle at 78% 18%,
+            rgba(184, 255, 77, 0.075),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 15% 85%,
+            rgba(80, 100, 255, 0.035),
+            transparent 30%
+        ),
+        #080A0F !important;
+
+    min-height: 100vh;
+}
+
+
+/* subtle technical grid */
+
+.stApp::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 64px 64px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 0%,
+            transparent 75%
+        );
+
+    z-index: 0;
+}
+
+
+/* ---------------------------------------------------------
+   MAIN CONTENT
+--------------------------------------------------------- */
+
+.block-container {
+
+    max-width: 1080px !important;
+
+    padding-top: 6rem !important;
+
+    padding-bottom: 6rem !important;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ---------------------------------------------------------
+   EYEBROW
+--------------------------------------------------------- */
+
+.hero-eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #B8FF4D;
+
+    font-size: 0.68rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.18em;
+
+    margin-bottom: 1.5rem;
+
+    text-transform: uppercase;
+}
+
+.hero-eyebrow::first-letter {
+
+    font-size: 0.8rem;
+}
+
+
+/* ---------------------------------------------------------
+   HERO TITLE
+--------------------------------------------------------- */
+
+.hero-title {
+
+    font-size: clamp(
+        4rem,
+        8vw,
+        7.8rem
+    );
+
+    line-height: 0.83;
+
+    font-weight: 500;
+
+    letter-spacing: -0.075em;
+
+    color: #F4F5F7;
+
+    margin-bottom: 2rem;
+}
+
+.hero-title span {
+
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgba(244,245,247,0.5);
+
+    text-shadow:
+        0 0 50px rgba(184,255,77,0.025);
+}
+
+
+/* ---------------------------------------------------------
+   DESCRIPTION
+--------------------------------------------------------- */
+
+.hero-description {
+
+    max-width: 520px;
+
+    color: #7E8694;
+
+    font-size: 0.95rem;
+
+    line-height: 1.7;
+
+    margin-bottom: 2.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   MICRO STATS
+--------------------------------------------------------- */
+
+.micro-stat {
+
+    position: relative;
+
+    padding: 1rem 0;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    margin-bottom: 3rem;
+}
+
+.micro-value {
+
+    color: #F4F5F7;
+
+    font-size: 1.2rem;
+
+    font-weight: 500;
+
+    letter-spacing: -0.03em;
+}
+
+.micro-label {
+
+    color: #555D6B;
+
+    font-size: 0.62rem;
+
+    letter-spacing: 0.13em;
+
+    margin-top: 0.25rem;
+}
+
+
+/* ---------------------------------------------------------
+   LOGIN INTRO
+--------------------------------------------------------- */
+
+.login-intro {
+
+    margin-top: 1rem;
+
+    margin-bottom: 1.2rem;
+
+    padding-left: 1px;
+}
+
+.login-kicker {
+
+    color: #B8FF4D;
+
+    font-size: 0.65rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.16em;
+
+    margin-bottom: 0.55rem;
+}
+
+.login-heading {
+
+    color: #F4F5F7;
+
+    font-size: 1.45rem;
+
+    font-weight: 500;
+
+    letter-spacing: -0.035em;
+}
+
+.login-copy {
+
+    color: #626A78;
+
+    font-size: 0.78rem;
+
+    margin-top: 0.35rem;
+}
+
+
+/* ---------------------------------------------------------
+   FORM
+--------------------------------------------------------- */
+
+[data-testid="stForm"] {
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.045),
+            rgba(255,255,255,0.012)
+        ) !important;
+
+    border: 1px solid rgba(255,255,255,0.09) !important;
+
+    border-radius: 18px !important;
+
+    padding: 1.5rem !important;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.025) !important;
+
+    backdrop-filter: blur(20px);
+
+    overflow: hidden;
+}
+
+
+/* glowing line across card */
+
+[data-testid="stForm"]::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 8%;
+
+    right: 8%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(184,255,77,0.5),
+            transparent
+        );
+
+    opacity: 0.65;
+}
+
+
+/* ---------------------------------------------------------
+   FORM LABEL
+--------------------------------------------------------- */
+
+[data-testid="stForm"] [data-testid="stTextInput"] label {
+
+    color: #7C8491 !important;
+
+    font-size: 0.62rem !important;
+
+    font-weight: 600 !important;
+
+    letter-spacing: 0.13em !important;
+}
+
+
+/* ---------------------------------------------------------
+   INPUT
+--------------------------------------------------------- */
+
+[data-testid="stForm"] input {
+
+    height: 52px !important;
+
+    background:
+        rgba(5,7,11,0.7) !important;
+
+    border: 1px solid rgba(255,255,255,0.075) !important;
+
+    border-radius: 10px !important;
+
+    color: #F4F5F7 !important;
+
+    font-size: 0.9rem !important;
+
+    padding-left: 1rem !important;
+
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease !important;
+}
+
+[data-testid="stForm"] input::placeholder {
+
+    color: #414854 !important;
+}
+
+[data-testid="stForm"] input:focus {
+
+    background:
+        rgba(8,10,15,0.95) !important;
+
+    border-color:
+        rgba(184,255,77,0.45) !important;
+
+    box-shadow:
+        0 0 0 3px rgba(184,255,77,0.07),
+        0 0 30px rgba(184,255,77,0.04) !important;
+}
+
+
+/* ---------------------------------------------------------
+   BUTTON
+--------------------------------------------------------- */
+
+[data-testid="stFormSubmitButton"] button {
+
+    position: relative;
+
+    height: 52px !important;
+
+    margin-top: 0.5rem;
+
+    border-radius: 10px !important;
+
+    border: 1px solid #B8FF4D !important;
+
+    background: #B8FF4D !important;
+
+    color: #080A0F !important;
+
+    font-size: 0.72rem !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.08em !important;
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease !important;
+}
+
+[data-testid="stFormSubmitButton"] button:hover {
+
+    background: #C7FF6A !important;
+
+    border-color: #C7FF6A !important;
+
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 12px 35px rgba(184,255,77,0.18),
+        0 0 35px rgba(184,255,77,0.08) !important;
+}
+
+[data-testid="stFormSubmitButton"] button:active {
+
+    transform: translateY(0) !important;
+}
+
+
+/* ---------------------------------------------------------
+   ERROR
+--------------------------------------------------------- */
+
+[data-testid="stAlert"] {
+
+    border-radius: 10px !important;
+
+    background:
+        rgba(255,92,92,0.06) !important;
+
+    border:
+        1px solid rgba(255,92,92,0.18) !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .block-container {
+
+        padding-top: 3rem !important;
+
+        padding-left: 1.25rem !important;
+
+        padding-right: 1.25rem !important;
+    }
+
+    .hero-title {
+
+        font-size: 4rem;
+
+        line-height: 0.88;
+    }
+
+    .micro-stat {
+
+        margin-bottom: 1rem;
+    }
+}
+
+/* =========================================================
+   ENTER THE GYM BUTTON — REFINED
+========================================================= */
+
+[data-testid="stFormSubmitButton"] button {
+    background: #B8FF4D !important;
+    color: #10140B !important;
+
+    border: 1px solid rgba(184, 255, 77, 0.9) !important;
+    border-radius: 10px !important;
+
+    height: 52px !important;
+
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+
+    box-shadow:
+        0 8px 25px rgba(184, 255, 77, 0.08) !important;
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease !important;
+}
+
+
+/* Make the actual text green-button dark */
+[data-testid="stFormSubmitButton"] button p {
+    color: #10140B !important;
+}
+
+
+/* Hover */
+[data-testid="stFormSubmitButton"] button:hover {
+    background: #C1FF63 !important;
+
+    border-color: #C1FF63 !important;
+
+    color: #10140B !important;
+
+    transform: translateY(-2px) !important;
+
+    box-shadow:
+        0 12px 32px rgba(184, 255, 77, 0.16),
+        0 0 20px rgba(184, 255, 77, 0.06) !important;
+}
+
+
+/* Click */
+[data-testid="stFormSubmitButton"] button:active {
+    transform: translateY(0) !important;
+
+    box-shadow:
+        0 5px 15px rgba(184, 255, 77, 0.08) !important;
+}
+
+/* =========================================================
+   SIDEBAR — PREMIUM FITNESS UI
+========================================================= */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0 22px 0;
+}
+
+.sidebar-brand-mark {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #B8FF4D;
+    color: #0A0D14;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+
+    border-radius: 10px;
+}
+
+.sidebar-brand-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.sidebar-brand-subtitle {
+    margin-top: 2px;
+
+    font-size: 9px;
+    letter-spacing: 0.12em;
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   USER CARD
+========================================================= */
+
+.user-card {
+    padding: 13px 14px;
+    margin-bottom: 25px;
+
+    background: #151923;
+
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+
+    opacity: 0.55;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    background: #B8FF4D;
+    border-radius: 50%;
+
+    box-shadow: 0 0 8px rgba(184,255,77,0.45);
+}
+
+.user-name {
+    margin-top: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SECTION LABELS
+========================================================= */
+
+.sidebar-section-label {
+    margin: 22px 0 10px 0;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+
+    color: rgba(255,255,255,0.42);
+}
+
+
+/* =========================================================
+   ACTIVE WORKOUT
+========================================================= */
+
+.active-workout-card {
+    padding: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(184,255,77,0.07),
+            rgba(184,255,77,0.015)
+        );
+
+    border: 1px solid rgba(184,255,77,0.18);
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+}
+
+.active-label {
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 0.13em;
+
+    color: #B8FF4D;
+}
+
+.active-exercise {
+    margin-top: 7px;
+
+    font-size: 17px;
+    font-weight: 650;
+
+    color: #F5F6F8;
+}
+
+.active-details {
+    display: flex;
+    gap: 7px;
+
+    margin-top: 6px;
+
+    font-size: 10px;
+    letter-spacing: 0.08em;
+
+    opacity: 0.45;
+}
+
+.detail-divider {
+    color: #B8FF4D;
+}
+
+
+/* =========================================================
+   PROGRESS GRID
+========================================================= */
+
+.progress-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+}
+
+.progress-card {
+    min-height: 74px;
+
+    padding: 12px;
+
+    background: #151923;
+
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 9px;
+}
+
+.progress-card.wide {
+    grid-column: span 2;
+    min-height: 62px;
+}
+
+.progress-label {
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.42;
+}
+
+.progress-value {
+    margin-top: 7px;
+
+    font-size: 24px;
+    font-weight: 500;
+
+    line-height: 1;
+}
+
+.progress-value span {
+    font-size: 12px;
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   FORM ANALYSIS
+========================================================= */
+
+.metric-heading {
+    margin-bottom: 8px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    color: #B8FF4D;
+}
+
+
+/* =========================================================
+   STREAMLIT METRICS
+========================================================= */
+
+[data-testid="stMetric"] {
+    background: #151923 !important;
+
+    border: 1px solid rgba(255,255,255,0.06) !important;
+
+    border-radius: 9px !important;
+
+    padding: 11px 12px !important;
+
+    min-height: 70px;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 9px !important;
+
+    letter-spacing: 0.04em;
+
+    opacity: 0.45;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 18px !important;
+
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   START SESSION
+========================================================= */
+
+[data-testid="stButton"] button {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease !important;
+}
+
+[data-testid="stButton"] button[kind="primary"] {
+    background: #B8FF4D !important;
+    color: #10130D !important;
+}
+
+
+/* =========================================================
+   NUMBER INPUTS
+========================================================= */
+
+[data-testid="stNumberInput"] input {
+    font-size: 14px !important;
+}
+
+
+/* =========================================================
+   SELECTBOX
+========================================================= */
+
+[data-testid="stSelectbox"] label {
+    font-size: 10px !important;
+
+    letter-spacing: 0.05em;
+
+    opacity: 0.55;
+}
+
+/* =========================================================
+   WEBCAM / EXERCISE ANALYSIS
+========================================================= */
+
+.gym-camera {
+    margin: 2rem 0;
+    padding: 0;
+}
+
+/* WebRTC component container */
+.gym-camera iframe {
+    width: 100% !important;
+    border: none !important;
+}
+
+/* Give the webcam section some breathing room */
+[data-testid="stVerticalBlock"]:has(.gym-camera) {
+    width: 100%;
+}
+/* =========================================================
+   WORKOUT HEADER
+========================================================= */
+
+.workout-header {
+    margin-bottom: 2.5rem;
+}
+
+.workout-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+}
+
+.workout-header p {
+    margin-top: 0.6rem;
+    opacity: 0.55;
+    font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   CAMERA HEADER
+========================================================= */
+
+.camera-header {
+    margin-bottom: 1rem;
+}
+
+.camera-header h3 {
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+.camera-header p {
+    margin: 0;
+    opacity: 0.5;
+    font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   EMPTY WORKOUT STATE
+========================================================= */
+
+.workout-empty {
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.workout-empty h3 {
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.06em;
+}
+
+.workout-empty p {
+    margin: 0;
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   WORKOUT HISTORY
+========================================================= */
+
+.history-header {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.history-header h3 {
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+.history-header p {
+    margin: 0;
+    opacity: 0.5;
+    font-size: 0.85rem;
+}
+.page-header {
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+.page-header p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.5;
+    letter-spacing: 0.03em;
+}
+/* =========================================================
+   CAMERA PLACEHOLDER
+========================================================= */
+
+.camera-placeholder {
+    width: 100%;
+    min-height: 280px;
+
+    margin: 2rem 0 3rem 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(24, 29, 42, 0.45);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    text-align: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle inner frame */
+
+.camera-placeholder::before {
+    content: "";
+    position: absolute;
+
+    inset: 18px;
+
+    border: 1px dashed rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+
+    pointer-events: none;
+}
+
+
+/* camera icon */
+
+.camera-placeholder-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 1rem;
+
+    border: 1px solid rgba(184, 255, 77, 0.25);
+    border-radius: 50%;
+
+    color: #B8FF4D;
+
+    font-size: 28px;
+
+    position: relative;
+    z-index: 1;
+}
+
+
+/* title */
+
+.camera-placeholder-title {
+    color: #F4F5F7;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    letter-spacing: 0.12em;
+
+    margin-bottom: 0.6rem;
+
+    position: relative;
+    z-index: 1;
+}
+
+
+/* description */
+
+.camera-placeholder-text {
+    color: rgba(244, 245, 247, 0.45);
+
+    font-size: 0.85rem;
+    line-height: 1.6;
+
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   CAMERA PLACEHOLDER
+   ========================================================= */
+
+.camera-card {
+    width: 100%;
+    margin: 42px 0 50px 0;
+    padding: 22px;
+    box-sizing: border-box;
+
+    background: rgba(18, 21, 29, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+}
+
+.camera-placeholder {
+    min-height: 330px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(180, 255, 60, 0.035),
+            transparent 55%
+        );
+
+    text-align: center;
+}
+
+.camera-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 22px;
+
+    border: 1px solid rgba(180, 255, 60, 0.35);
+    border-radius: 50%;
+
+    color: #b4ff3c;
+    font-size: 30px;
+
+    box-shadow:
+        0 0 0 8px rgba(180, 255, 60, 0.025),
+        0 0 25px rgba(180, 255, 60, 0.08);
+}
+
+.camera-placeholder-title {
+    margin-bottom: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+
+    color: #f2f3f5;
+}
+
+.camera-placeholder-text {
+    font-size: 14px;
+    line-height: 1.7;
+
+    color: #737985;
+}
+
+
+/* =========================================================
+   CAMERA PLACEHOLDER
+   ========================================================= */
+
+.camera-section {
+    width: 100%;
+    margin: 34px 0 42px;
+}
+
+.camera-frame {
+    position: relative;
+    width: 100%;
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #0f1118;
+    border: 1px solid #252a35;
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+/* subtle inner camera boundary */
+
+.camera-frame::before {
+    content: "";
+    position: absolute;
+    inset: 22px;
+
+    border: 1px dashed #252b36;
+    border-radius: 12px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PLACEHOLDER CARD
+   ========================================================= */
+
+.camera-placeholder {
+    position: relative;
+    z-index: 2;
+
+    width: min(430px, 80%);
+
+    padding: 34px 38px;
+
+    text-align: center;
+
+    background: #181b23;
+    border: 1px solid #272c37;
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   CAMERA ICON
+   ========================================================= */
+
+.camera-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #adff3f;
+    font-size: 27px;
+
+    border: 1px solid rgba(173, 255, 63, 0.35);
+
+    box-shadow:
+        0 0 0 8px rgba(173, 255, 63, 0.03),
+        0 0 25px rgba(173, 255, 63, 0.08);
+}
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.camera-placeholder-title {
+    margin-bottom: 10px;
+
+    color: #f2f3f5;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+}
+
+.camera-placeholder-text {
+    color: #777d89;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.camera-section {
+    width: 100%;
+    margin: 34px 0 42px;
+}
+
+.camera-frame {
+    position: relative;
+    width: 100%;
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #0f1118;
+    border: 1px solid #252a35;
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.camera-frame::before {
+    content: "";
+    position: absolute;
+    inset: 22px;
+
+    border: 1px dashed #252b36;
+    border-radius: 12px;
+
+    pointer-events: none;
+}
+
+.camera-placeholder {
+    position: relative;
+    z-index: 2;
+
+    width: min(430px, 80%);
+    padding: 34px 38px;
+
+    text-align: center;
+
+    background: #181b23;
+    border: 1px solid #272c37;
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.camera-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #adff3f;
+    font-size: 27px;
+
+    border: 1px solid rgba(173, 255, 63, 0.35);
+
+    box-shadow:
+        0 0 0 8px rgba(173, 255, 63, 0.03),
+        0 0 25px rgba(173, 255, 63, 0.08);
+}
+
+.camera-placeholder-title {
+    margin-bottom: 10px;
+
+    color: #f2f3f5;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+}
+
+.camera-placeholder-text {
+    color: #777d89;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   LIVE TRAINING
+   ========================================================= */
+
+.training-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 18px 0 12px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+
+    color: #adff3f;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #adff3f;
+
+    box-shadow:
+        0 0 10px rgba(173, 255, 63, 0.7);
+}
+
+.status-exercise {
+    margin-left: 8px;
+
+    color: #777d89;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   WEBRTC CONTAINER
+   ========================================================= */
+
+[data-testid="stCustomComponentV1"] {
+    width: 100% !important;
+}
+
+
+/* Don't accidentally hide the WebRTC iframe */
+
+iframe {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   CAMERA PLACEHOLDER
+   ========================================================= */
+
+.camera-section {
+    width: 100%;
+    margin: 30px 0 40px;
+}
+
+.camera-frame {
+    position: relative;
+
+    width: 100%;
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #0f1118;
+
+    border: 1px solid #252a35;
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.camera-frame::before {
+    content: "";
+
+    position: absolute;
+    inset: 22px;
+
+    border: 1px dashed #252b36;
+    border-radius: 12px;
+
+    pointer-events: none;
+}
+
+.camera-placeholder {
+    position: relative;
+    z-index: 2;
+
+    width: min(430px, 80%);
+
+    padding: 34px 38px;
+
+    text-align: center;
+
+    background: #181b23;
+
+    border: 1px solid #272c37;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.camera-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #adff3f;
+
+    font-size: 27px;
+
+    border: 1px solid rgba(173, 255, 63, 0.35);
+
+    box-shadow:
+        0 0 0 8px rgba(173, 255, 63, 0.03),
+        0 0 25px rgba(173, 255, 63, 0.08);
+}
+
+.camera-placeholder-title {
+    margin-bottom: 10px;
+
+    color: #f2f3f5;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+}
+
+.camera-placeholder-text {
+    color: #777d89;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
