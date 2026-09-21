@@ -844,13 +844,33 @@ def main():
         music_source = st.radio("Music Source", ["Spotify", "YouTube"], horizontal=True, label_visibility="collapsed")
         
         if music_source == "Spotify":
+            spotify_url = st.text_input("Spotify Link", value="https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP", placeholder="Paste Spotify Track/Playlist Link", key="spotify_bgm")
+            
+            embed_url = "https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator&theme=0"
+            if "spotify.com" in spotify_url:
+                try:
+                    parts = spotify_url.split("spotify.com/")[1].split("?")[0]
+                    embed_url = f"https://open.spotify.com/embed/{parts}?utm_source=generator&theme=0"
+                except:
+                    pass
+                    
             st.components.v1.html(
-                '<iframe style="border-radius:12px; display: block;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                f'<iframe style="border-radius:12px; display: block;" src="{embed_url}" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
                 height=155
             )
         else:
+            yt_url = st.text_input("YouTube Link", value="https://www.youtube.com/watch?v=5qap5aO4i9A", placeholder="Paste YouTube Link", key="yt_bgm")
+            
+            embed_url = "https://www.youtube.com/embed/5qap5aO4i9A"
+            if "youtube.com/watch?v=" in yt_url:
+                vid_id = yt_url.split("v=")[1].split("&")[0]
+                embed_url = f"https://www.youtube.com/embed/{vid_id}"
+            elif "youtu.be/" in yt_url:
+                vid_id = yt_url.split("youtu.be/")[1].split("?")[0]
+                embed_url = f"https://www.youtube.com/embed/{vid_id}"
+                
             st.components.v1.html(
-                '<iframe width="100%" height="152" style="border-radius:12px;" src="https://www.youtube.com/embed/5qap5aO4i9A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+                f'<iframe width="100%" height="152" style="border-radius:12px;" src="{embed_url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
                 height=155
             )
             
