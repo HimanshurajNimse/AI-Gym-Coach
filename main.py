@@ -835,6 +835,29 @@ def main():
 
             render_live_metrics(exercise)
 
+        # =================================================
+        # MUSIC & CONTROLS
+        # =================================================
+        st.html('<div style="height:25px"></div>')
+        st.html('<div class="sidebar-section-label">BACKGROUND MUSIC 🎵</div>')
+        
+        music_source = st.radio("Music Source", ["Spotify", "YouTube"], horizontal=True, label_visibility="collapsed")
+        
+        if music_source == "Spotify":
+            st.components.v1.html(
+                '<iframe style="border-radius:12px; display: block;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX76Wlfdnj7AP?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                height=155
+            )
+        else:
+            st.components.v1.html(
+                '<iframe width="100%" height="152" style="border-radius:12px;" src="https://www.youtube.com/embed/5qap5aO4i9A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>',
+                height=155
+            )
+            
+        st.html('<div style="height:25px"></div>')
+        if st.button("LOG OUT", use_container_width=True):
+            st.session_state.clear()
+            st.rerun()
     # =====================================================
     # MAIN SCREEN
     # =====================================================
