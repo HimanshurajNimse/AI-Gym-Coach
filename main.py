@@ -791,14 +791,18 @@ def main():
             if end_session_button:
                 st.session_state["workout_started"] = False
                 
-                # Fetch AI Post-Workout Summary
-                if st.session_state.voice_pipeline and hasattr(st.session_state.voice_pipeline.llm, "generate_workout_summary"):
+                # Fetch actual completed reps and sets
+                actual_reps = st.session_state.get("reps", 0)
+                actual_sets = st.session_state.get("sets_completed", 0)
+                
+                # Fetch AI Post-Workout Summary only if they did work
+                if (actual_reps > 0 or actual_sets > 0) and st.session_state.voice_pipeline and hasattr(st.session_state.voice_pipeline.llm, "generate_workout_summary"):
                     issues = st.session_state.get("session_issues", [])
                     try:
                         summary = st.session_state.voice_pipeline.llm.generate_workout_summary(
                             exercise=exercise,
-                            reps=reps,
-                            sets=sets,
+                            reps=actual_reps,
+                            sets=actual_sets,
                             form_issues=issues
                         )
                         st.session_state["post_workout_summary"] = summary
@@ -811,6 +815,15 @@ def main():
                             pass
                     except Exception as e:
                         print(f"Summary Error: {e}")
+                elif actual_reps == 0 and actual_sets == 0:
+                    aborted_msg = "Session aborted. No reps recorded. Take a breather and let's get back to it when you're ready!"
+                    st.session_state["post_workout_summary"] = aborted_msg
+                    if st.session_state.voice_pipeline:
+                        try:
+                            st.session_state["audio_to_play"] = st.session_state.voice_pipeline.tts.speak(aborted_msg)
+                            st.session_state["coach_feedback"] = aborted_msg
+                        except:
+                            pass
                 
                 st.session_state["show_summary"] = True
                 
@@ -842,69 +855,86 @@ def main():
         st.success(f"**Coach:** {st.session_state.coach_feedback}")
 
     if st.session_state.get("show_summary"):
-        st.markdown("### WORKOUT COMPLETE 🏆")
+        sets_done = st.session_state.get("sets_completed", 0)
+        reps_done = st.session_state.get("reps", 0)
         
-        # Badges
-        issues = st.session_state.get("session_issues", [])
-        badges = []
-        if len(issues) == 0:
-            badges.append("🏆 Perfect Form")
+        if sets_done == 0 and reps_done == 0:
+            st.markdown("### SESSION ABORTED ⚠️")
+            st.warning("You ended the session before completing any reps. No progress was recorded. Stay focused and try again next time!")
+            if st.button("DISMISS", use_container_width=True):
+                st.session_state["show_summary"] = False
+                st.session_state["coach_feedback"] = ""
+                st.session_state["audio_to_play"] = None
+                st.rerun()
         else:
-            badges.append("💪 Iron Will")
-        if st.session_state.get('plan_reps', 0) >= 15:
-            badges.append("🔥 Volume Warrior")
+            # Check if they hit the target
+            target_sets = st.session_state.get("plan_sets", 0)
+            if sets_done >= target_sets:
+                st.markdown("### WORKOUT COMPLETE 🏆")
+            else:
+                st.markdown("### WORKOUT INCOMPLETE ⏱️")
+
+            # Badges
+            issues = st.session_state.get("session_issues", [])
+            badges = []
+            if len(issues) == 0:
+                badges.append("🏆 Perfect Form")
+            else:
+                badges.append("🛡️ Iron Will")
+            if reps_done >= 15:
+                badges.append("🔥 Volume Warrior")
+                
+            badge_html = " ".join([f"<span style='background: #333; padding: 5px 12px; border-radius: 15px; margin-right: 10px; font-weight: bold; color: #f36c21; font-size: 0.9rem;'>{b}</span>" for b in badges])
             
-        badge_html = " ".join([f"<span style='background: #333; padding: 5px 12px; border-radius: 15px; margin-right: 10px; font-weight: bold; color: #f36c21; font-size: 0.9rem;'>{b}</span>" for b in badges])
-        
-        st.html(f"""
-        <div style="margin-bottom: 20px;">
-            {badge_html}
-        </div>
-        <div style="background-color: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333;">
-            <div style="display: flex; justify-content: space-around; text-align: center;">
-                <div><h4 style="color: #888; margin:0;">Sets Completed</h4><h2 style="margin:0; color: #fff;">{st.session_state.get('plan_sets', 0)}</h2></div>
-                <div><h4 style="color: #888; margin:0;">Reps per Set</h4><h2 style="margin:0; color: #fff;">{st.session_state.get('plan_reps', 0)}</h2></div>
+            st.html(f"""
+            <div style="margin-bottom: 20px;">
+                {badge_html}
             </div>
-        </div>
-        """)
-        
-        # Form Report section
-        if len(issues) > 0:
-            st.markdown("### 📋 Form Report")
-            for issue in issues:
-                st.warning(f"⚠️ {issue}")
-        else:
-            st.markdown("### 📋 Form Report")
-            st.success("✅ Flawless execution! No form mistakes detected.")
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #333;">
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div><h4 style="color: #888; margin:0;">Sets Completed</h4><h2 style="margin:0; color: #fff;">{sets_done}</h2></div>
+                    <div><h4 style="color: #888; margin:0;">Total Reps</h4><h2 style="margin:0; color: #fff;">{reps_done}</h2></div>
+                </div>
+            </div>
+            """)
             
-        summary = st.session_state.get("post_workout_summary", "Great job! Keep up the good work.")
-        st.info(f"**Coach's Notes:** {summary}")
-        
-        render_muscle_map(st.session_state.get("exercise_type", "Squats"))
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("DISCARD", use_container_width=True):
-                st.session_state["show_summary"] = False
-                st.session_state["coach_feedback"] = ""
-                st.session_state["audio_to_play"] = None
-                st.rerun()
-        with col2:
-            if st.button("SAVE WORKOUT", use_container_width=True, type="primary"):
-                # Save partial/full workout to history if needed
-                from services.persistence.exercise_repository import add_exercise
-                user_id = st.session_state.get("user_id", 0)
-                add_exercise(
-                    user_id=user_id,
-                    exercise_name=st.session_state.get("exercise_type", "Squats"),
-                    reps=st.session_state.get("plan_reps", 0),
-                    sets=st.session_state.get("plan_sets", 0),
-                    time=0 # Time calculation can be added if tracked
-                )
-                st.session_state["show_summary"] = False
-                st.session_state["coach_feedback"] = ""
-                st.session_state["audio_to_play"] = None
-                st.rerun()
+            # Form Report section
+            if len(issues) > 0:
+                st.markdown("### 📋 Form Report")
+                for issue in issues:
+                    st.warning(f"⚠️ {issue}")
+            else:
+                st.markdown("### 📋 Form Report")
+                st.success("✅ Flawless execution! No form mistakes detected.")
+                
+            summary = st.session_state.get("post_workout_summary", "Great job! Keep up the good work.")
+            st.info(f"**Coach's Notes:** {summary}")
+            
+            render_muscle_map(st.session_state.get("exercise_type", "Squats"))
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("DISCARD", use_container_width=True):
+                    st.session_state["show_summary"] = False
+                    st.session_state["coach_feedback"] = ""
+                    st.session_state["audio_to_play"] = None
+                    st.rerun()
+            with col2:
+                if st.button("SAVE WORKOUT", use_container_width=True, type="primary"):
+                    # Save partial/full workout to history if needed
+                    from services.persistence.exercise_repository import add_exercise
+                    user_id = st.session_state.get("user_id", 0)
+                    add_exercise(
+                        user_id=user_id,
+                        exercise_name=st.session_state.get("exercise_type", "Squats"),
+                        reps=reps_done,
+                        sets=sets_done,
+                        time=0 # Time calculation can be added if tracked
+                    )
+                    st.session_state["show_summary"] = False
+                    st.session_state["coach_feedback"] = ""
+                    st.session_state["audio_to_play"] = None
+                    st.rerun()
 
     elif not workout_started:
 
