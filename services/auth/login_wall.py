@@ -104,7 +104,7 @@ def render_login_wall():
 
         submit_button = st.form_submit_button(
             "Start Session",
-            width="stretch"
+            use_container_width=True
         )
 
     if submit_button:
