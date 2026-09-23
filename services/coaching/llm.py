@@ -13,7 +13,7 @@ class LLMCoach:
             raise ValueError("GROQ_API_KEY is missing from .env")
 
         self.client = Groq(api_key=api_key)
-        self.model = "llama3-8b-8192"
+        self.model = "openai/gpt-oss-20b"
 
     def give_feedback(self, event, exercise=None, issue=None):
         prompt = f"""
