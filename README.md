@@ -67,10 +67,18 @@ Open `http://localhost:8501` in your browser. Ensure your browser allows camera 
 
 ## ☁️ Deploying to the Cloud
 
-If you intend to deploy this app to Streamlit Community Cloud or any other cloud provider, you **must configure a TURN server** for the WebRTC camera to connect over the internet.
-1. Create a free [Twilio](https://www.twilio.com/) account.
-2. Add `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN` to your Streamlit Secrets.
-3. Update `main.py`'s `rtc_configuration` to fetch ice servers using Twilio's Network Traversal Service.
+This app is 100% ready to be deployed for free on **Streamlit Community Cloud**. 
+
+Unlike many WebRTC apps that require paid TURN servers (like Twilio) to work over the internet, this codebase comes pre-configured with a **free Google STUN server** (`stun.l.google.com:19302`). This ensures the live camera feed will successfully connect for the vast majority of users on standard home and mobile networks without needing any paid infrastructure!
+
+**To Deploy:**
+1. Connect your GitHub to [share.streamlit.io](https://share.streamlit.io/).
+2. Select this repository and set the main file to `main.py`.
+3. In the **Advanced Settings**, add your API key to the Secrets:
+   ```toml
+   GROQ_API_KEY = "your_groq_api_key_here"
+   ```
+4. Click **Deploy**!
 
 ---
 
